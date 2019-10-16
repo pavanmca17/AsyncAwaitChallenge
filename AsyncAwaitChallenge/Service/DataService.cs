@@ -3,31 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncAwaitChallenge.Models;
-using AsyncAwaitChallenge.Service;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace DemoAPI.Controllers
+namespace AsyncAwaitChallenge.Service
 {
-           
-    [ApiController]
-    public class EmployeeController : Controller
+    public class DataService : IDataService
     {
-        private IDataService _dataService;
-
-        public EmployeeController(IDataService dataService)
-        {
-            _dataService = dataService;
-        }
-        public EmployeeController(ILogger<EmployeeController> logger)
-        {
-            logger.LogInformation("Created");
-        }
-
-       
-        [HttpGet]
-        [Route("api/getallemployees")]
-        public ActionResult<List<EmployeeData>> GetEmployees()
+        public async Task<List<EmployeeData>> GetEmployees()
         {
             var employees = new List<EmployeeData>()
             {
@@ -61,9 +42,8 @@ namespace DemoAPI.Controllers
                 }
             };
 
+            return await Task.FromResult<List<EmployeeData>>(employees);
 
-            return Ok(employees);
         }
     }
 }
-
